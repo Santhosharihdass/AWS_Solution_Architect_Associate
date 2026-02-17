@@ -1,11 +1,22 @@
-# Check for bucket name
+#!/bin/bash
+
+# Check if bucket name is provided
 if [ -z "$1" ]; then
-    echo "A bucket name is required. Example: ./bucket.sh my-bucket-name"
-    exit 1
+  echo "Usage: ./create-bucket.sh <bucket-name>"
+  exit 1
 fi
 
 BUCKET_NAME=$1
+REGION="us-east-1"
+
+echo "Creating S3 bucket: $BUCKET_NAME"
 
 aws s3api create-bucket \
-    --bucket "$BUCKET_NAME" \
-    --region us-east-1
+  --bucket "$BUCKET_NAME" \
+  --region "$REGION"
+
+if [ $? -eq 0 ]; then
+  echo "✅ Bucket created successfully"
+else
+  echo "❌ Bucket creation failed"
+fi
